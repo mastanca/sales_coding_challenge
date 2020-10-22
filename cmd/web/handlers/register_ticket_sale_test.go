@@ -27,7 +27,7 @@ func TestRegisterTicketSaleHandlerImpl_Handle(t *testing.T) {
 
 	t.Run("Error", func(t *testing.T) {
 		t.Run("empty body", func(t *testing.T) {
-			response := test.MakeRequest(router, http.MethodPost, "/api/v1/sales", strings.NewReader(`{"some": "thing"}`))
+			response := test.MakeRequest(router, http.MethodPost, "/api/v1/sales", nil)
 
 			assert.Equal(t, http.StatusBadRequest, response.Code)
 		})
@@ -36,6 +36,10 @@ func TestRegisterTicketSaleHandlerImpl_Handle(t *testing.T) {
 
 			assert.Equal(t, http.StatusBadRequest, response.Code)
 		})
-	})
+		t.Run("missing required fields in body", func(t *testing.T) {
+			response := test.MakeRequest(router, http.MethodPost, "/api/v1/sales", strings.NewReader(`{"some": "thing"}`))
 
+			assert.Equal(t, http.StatusBadRequest, response.Code)
+		})
+	})
 }
