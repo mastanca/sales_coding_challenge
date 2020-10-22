@@ -3,6 +3,8 @@ package usecases
 import (
 	"context"
 
+	"github.com/pkg/errors"
+
 	"github.com/mastanca/SALES_MARTIN_STANCANELLI/domain/ticket"
 )
 
@@ -23,7 +25,7 @@ func NewGetSalesStatsPerCountryImpl(repository ticket.Repository) *getSalesStats
 func (g getSalesStatsPerCountryImpl) Execute(ctx context.Context) (StatsPerCountry, error) {
 	soldTickets, err := g.repository.GetAll(ctx)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "couldn't fetch sold tickets")
 	}
 	result := make(StatsPerCountry)
 	for _, soldTicket := range soldTickets {
