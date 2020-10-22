@@ -6,3 +6,5 @@ type Ticket struct {
 	Country string `json:"country" binding:"required"`
 	Event   string `json:"event"`
 }
+
+type Tickets []Ticket
