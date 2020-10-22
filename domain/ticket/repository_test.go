@@ -42,6 +42,6 @@ func TestInMemoryRepository_GetAll(t *testing.T) {
 
 		assert.NoError(t, err)
 		assert.Len(t, fetchedTickets, len(tickets))
-		assert.ObjectsAreEqual(fetchedTickets, tickets)
+		assert.ElementsMatch(t, fetchedTickets, tickets)
 	})
 }
