@@ -1,5 +1,5 @@
 package ticket
 
 type Ticket struct {
-	Country string `json:"country"`
+	Country string `json:"country" binding:"required"`
 }
