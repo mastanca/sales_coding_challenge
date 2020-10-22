@@ -1,13 +1,18 @@
 package main
 
 import (
+	"log"
+
 	"github.com/gin-gonic/gin"
 	"github.com/mastanca/SALES_MARTIN_STANCANELLI/cmd/web/handlers"
-	"log"
+	"github.com/mastanca/SALES_MARTIN_STANCANELLI/domain/ticket"
+	"github.com/mastanca/SALES_MARTIN_STANCANELLI/usecases"
 )
 
 func main() {
-	registerTicketSaleHandler := handlers.NewRegisterTicketSaleHandlerImpl()
+	ticketsRepository := ticket.NewInMemoryRepository()
+	registerTicketSale := usecases.NewRegisterTicketSale(ticketsRepository)
+	registerTicketSaleHandler := handlers.NewRegisterTicketSaleHandlerImpl(registerTicketSale)
 
 	router := gin.Default()
 	api := router.Group("/api")
