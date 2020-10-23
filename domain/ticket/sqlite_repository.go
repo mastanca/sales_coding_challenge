@@ -29,7 +29,7 @@ func NewMysqlRepository() (*sqliteRepository, error) {
 }
 
 func (m sqliteRepository) Save(ctx context.Context, ticket Ticket) error {
-	if _, err := m.database.Exec("insert into tickets (id, country, event) values ($1, $2, $3)", uuid.New().String(), ticket.Country, ticket.Event); err != nil {
+	if _, err := m.database.Exec("INSERT into tickets (id, country, event) values ($1, $2, $3)", uuid.New().String(), ticket.Country, ticket.Event); err != nil {
 		return errors.Wrap(err, "an error occurred while saving a ticket sale")
 	}
 	return nil
@@ -42,12 +42,12 @@ func (m sqliteRepository) GetAll(ctx context.Context) (Tickets, error) {
 	}
 	var result Tickets
 	for rows.Next() {
-		var ticketDb Ticket
-		err = rows.StructScan(&ticketDb)
+		var ticket Ticket
+		err = rows.StructScan(&ticket)
 		if err != nil {
-			return nil, nil
+			return nil, errors.Wrap(err, "failed to scan ticket sale row into struct")
 		}
-		result = append(result, ticketDb)
+		result = append(result, ticket)
 	}
 	return result, nil
 }
@@ -60,8 +60,8 @@ var schema = `
 		id text not null
 			constraint tickets_pk
 				primary key,
-		country varchar(255) null,
-		event varchar(255) null
+		country text null,
+		event text null
 	);
 	
 	create unique index if not exists tickets_id_uindex
