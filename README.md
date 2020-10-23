@@ -2,6 +2,16 @@
 
 ## Running
 
+``` shell script
+./run.sh
+```
+
+## Cleanup
+
+``` shell script
+./clean.sh
+```
+
 ## Credentials
 
 As saving users is out of scope, a simple JWT approach was implemented
