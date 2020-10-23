@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/pkg/errors"
+
 	"github.com/mastanca/SALES_MARTIN_STANCANELLI/test"
 
 	mocks "github.com/mastanca/SALES_MARTIN_STANCANELLI/mocks/usecases"
@@ -29,5 +31,19 @@ func TestGetSaleStatsPerCountryHandlerImpl_Handle(t *testing.T) {
 		assert.Equal(t, http.StatusOK, response.Code)
 		assert.Equal(t, uint64(5), responseBody["AR"])
 		assert.Equal(t, uint64(3), responseBody["BO"])
+	})
+	t.Run("Error", func(t *testing.T) {
+		t.Run("error in repository", func(t *testing.T) {
+			getSalesStatsPerCountry := new(mocks.GetSalesStatsPerCountry)
+			defer getSalesStatsPerCountry.AssertExpectations(t)
+			getSalesStatsPerCountry.On("Execute", mock.Anything).Return(nil, errors.New("fatal"))
+
+			handler := NewGetSaleStatsPerCountryHandlerImpl(getSalesStatsPerCountry)
+			router := test.Router("/api/v1/stats", handler.Handle, http.MethodGet)
+
+			response := test.MakeRequest(router, http.MethodGet, "/api/v1/stats", nil)
+
+			assert.Equal(t, http.StatusInternalServerError, response.Code)
+		})
 	})
 }
