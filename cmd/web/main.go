@@ -12,7 +12,6 @@ import (
 )
 
 func main() {
-	//ticketsRepository := ticket.NewInMemoryRepository()
 	ticketsRepository, err := ticket.NewMysqlRepository()
 	if err != nil {
 		log.Fatalf("error initializing database: %s", err)
