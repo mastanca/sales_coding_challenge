@@ -16,7 +16,17 @@ type inMemoryRepository struct {
 }
 
 func (i inMemoryRepository) GetAll(ctx context.Context) (Tickets, error) {
-	var result Tickets
+	//var result Tickets
+	result := Tickets{{
+		Country: "AR",
+		Event:   "event 1",
+	}, {
+		Country: "AR",
+		Event:   "event 2",
+	}, {
+		Country: "BR",
+		Event:   "event 3",
+	}}
 	for _, v := range i.db {
 		result = append(result, v)
 	}
